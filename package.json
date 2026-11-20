@@ -1,0 +1,27 @@
+{
+  "name": "@local/dsh-terminal-mac",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "一台隔离的虚拟 Mac 全套能力：客户机内的截图/点击/输入、虚拟机启停，以及教会 Agent 何时自己用、何时自动关机的 skill。",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "skills",
+    "locale/*.json",
+    "docs",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

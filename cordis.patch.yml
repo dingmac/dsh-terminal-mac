@@ -1,0 +1,40 @@
+# dsh-terminal-mac —— 虚拟 Mac 全套能力（一个插件）
+#
+# 一个 bundle 插入两条插件行：
+#
+#   1) terminal-mac-mcp  —— @deepseek-ai/dsh-mcp-client 的 stdio 条目，
+#      连上 terminal-mac 自带的 MCP 服务器，得到客户机内操作工具：
+#        mcp__terminal-mac__screenshot / click / move / drag / scroll / type / key / status
+#
+#   2) terminal-mac      —— 本插件（@local/dsh-terminal-mac），提供：
+#        虚拟机生命周期工具 terminal_mac_vm_status / start / stop / pause / resume
+#        内嵌 skill virtual-mac：何时自己开机、怎么观察-操作-验证、任务结束怎么自动关机
+#
+# 审批按调用：改状态的工具带 confirm: true 才走 tools/pre-execute 的 ask。
+# 当前 profile 的审批策略是「从不询问」，带 confirm 会被确定性拒绝（fail closed），
+# 所以 requireConfirm 保持 false，由 agent 按任务判断是否要审批。
+#
+# 可调参数：
+#   mcp.command / args / env   terminal-mac 启动器路径、虚拟机名
+#   mcp.toolCallTimeoutMs      截图/长文本输入的超时（2 核机器偏慢，放到 120s）
+#   requireConfirm             为 true 时所有改状态调用都要求审批
+#   *TimeoutMs                 各生命周期命令超时；关机慢的机器可调大 stopTimeoutMs
+- insert:
+    - id: terminal-mac-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: terminal-mac
+        transport: stdio
+        command: /Users/dingmac/.local/bin/terminal-mac
+        args: ['mcp', 'default']
+        env:
+          TERMINAL_MAC_HOME: /Users/dingmac/Library/Application Support/terminal-mac
+        failOnStartupError: true
+        toolCallTimeoutMs: 120000
+
+    - id: terminal-mac
+      name: '@local/dsh-terminal-mac'
+      config:
+        launcher: /Users/dingmac/.local/bin/terminal-mac
+        machine: default
+        requireConfirm: false

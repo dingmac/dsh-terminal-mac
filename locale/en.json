@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Virtual Mac (terminal-mac)",
+    "description": "One isolated macOS virtual machine: screenshot, click, type and press keys inside the guest, start and stop the machine, plus a skill that teaches the agent when to use it and to shut it down afterwards.",
+    "detail": "docs/DETAIL.md"
+  }
+}
